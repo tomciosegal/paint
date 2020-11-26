@@ -10,6 +10,20 @@
     <button id="pencil">Draw</button>
     <button id="rubber">Erase</button>
     <button id="delete">Delete</button>
+
+    <input type="range" id="size" min="1" max="100" value="10" />
+
+    <div id="erase" style="width:10px; height:10px; border:solid 1px #000; position: absolute"></div>
+
+    <ul>
+        <li style="width:20px; height:20px; background:#000" data-color='black'></li>
+        <li style="width:20px; height:20px; background:green" data-color='green'></li>
+        <li style="width:20px; height:20px; background:red" data-color='red'></li>
+        <li style="width:20px; height:20px; background:yellow" data-color='yellow'></li>
+        <li style="width:20px; height:20px; background:blue" data-color='blue'></li>
+    </ul>
+
+
     <script src="paint.js"></script>
 </body>
 </html>

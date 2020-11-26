@@ -18,6 +18,10 @@ const paint = {
     pencil: document.getElementById('pencil'),
     rubber: document.getElementById('rubber'),
     delete: document.getElementById('delete'),
+    erase: document.getElementById('erase'),
+    size: document.getElementById('size'),
+    colors: document.querySelectorAll('[data-color]'),
+    color:'#000',
 
     mouseDownEvent: function(){
         canvas.addEventListener('mousedown', this.mouseDown.bind(this));  
@@ -25,6 +29,8 @@ const paint = {
 
     mouseDown: function(e){
         this.isPainting = true;
+        this.ctx.lineWidth = this.size.value;
+        this.ctx.strokeStyle = this.color;
         if(this.operation == 'rubber'){
             this.ctx.strokeStyle = '#fff';
         }
@@ -38,8 +44,12 @@ const paint = {
 
     mouseMove: function(e){
         if(this.isPainting == true){
-                this.ctx.lineTo(e.x, e.y);
-                this.ctx.stroke();         
+            if(this.operation == 'rubber'){
+                this.erase.style.top = e.y + 'px';
+                this.erase.style.left = e.x + 'px';
+            }
+            this.ctx.lineTo(e.x, e.y);
+            this.ctx.stroke();         
         }
     },
 
@@ -57,6 +67,41 @@ const paint = {
 
     rubberOperation: function(){
         this.operation = 'rubber';
+    },
+
+    pencilEvent: function(){
+        this.pencil.addEventListener('click', this.pencilSwitch.bind(this))
+    },
+
+    pencilSwitch: function(){
+        this.operation = 'draw';
+    },
+
+    deleteEvent: function(){
+        this.delete.addEventListener('click', this.deleteDraw.bind(this))
+    },
+
+    deleteDraw: function(){
+        this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    },
+
+    sizeEvent: function(){
+        this.size.addEventListener('change', this.changeSize.bind(this))
+    },
+
+    changeSize: function(){
+        this.erase.style.width = this.size.value +'px';
+        this.erase.style.height = this.size.value + 'px';
+    },
+
+    colorEvent: function(){
+        for(let color of this.colors){
+            color.addEventListener('click', this.colorChoice.bind(this));
+        }
+    },
+
+    colorChoice: function(e){
+        this.color = e.target.dataset.color
     }
 }
 
@@ -64,3 +109,7 @@ paint.mouseDownEvent();
 paint.mouseMoveEvent();
 paint.mouseUpEvent();
 paint.rubberEvent();
+paint.pencilEvent();
+paint.deleteEvent();
+paint.sizeEvent();
+paint.colorEvent();
